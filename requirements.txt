@@ -1,0 +1,4 @@
+# The planners, simulator and experiment runner use only the standard library.
+matplotlib>=3.7   # figures only (python -m src.experiments.plots)
+pytest>=7.4       # test suite
+numpy>=1.22       # optional: fast congestion-map build on the 161x63 MovingAI map (same result without it, just slower)

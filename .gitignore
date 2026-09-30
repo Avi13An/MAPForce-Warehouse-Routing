@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+.env
+.pytest_cache/
+.DS_Store
+
+# Instacart: the raw ~600 MB download stays local. The small per-product
+# order-count summary the loader writes (product_frequencies.csv) is shared,
+# so teammates do not need the download.
+data/instacart/*.csv
+data/instacart/*.zip
+!data/instacart/product_frequencies.csv
+
+# Result CSVs and figures ARE tracked: the report's numbers and plots have to
+# be in the repository. Throw-away runs go in results/scratch/.
+results/scratch/

@@ -1,0 +1,5 @@
+# One line-ending convention for everyone: LF in the repository and in the
+# working tree, on every platform. Without this, files edited on Windows show
+# up as changed on every line.
+* text=auto eol=lf
+*.png binary
