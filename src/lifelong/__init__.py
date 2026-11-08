@@ -1,0 +1,1 @@
+"""MAPForce lifelong module."""
