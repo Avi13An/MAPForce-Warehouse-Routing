@@ -1,0 +1,25 @@
+Higher-density runs (60 and 80 robots) started: 2026-11-15 16:02:44 UTC
+Commit: f2b8c9da633a83afd92e39b729733d6ed69ee35e (clean working tree); same code as the main grid (5ed13c7) for everything the runs execute
+Python: Python 3.14.6
+Machine: Linux 6.18.44-fc-v553, 2 cores, Intel(R) Xeon(R) Processor @ 2.10GHz (the machine of the main grid)
+Two jobs run in parallel. Planner limits are CPU seconds (time.process_time).
+Demand: data/instacart/product_frequencies.csv, sha256 685f23647755af19b85def774f74ce26e77ebdb7b11fc4886761ba0295a35f59
+Design: both layouts x robots 60, 80 x 3 skews x 2 delay levels x 3 seeds x 4 planners = 288 runs.
+CBS is not run: at 40 robots it already solves 0.35 of its planning calls and averages 3.4 s of its 5 s limit per call.
+Every other setting is the main grid's (150 timesteps, h = 5, 0.5 orders per step, 5 s CPU limit, w = 1.5, lambda = 1.0).
+Jobs:
+  python -m src.experiments.runner --robots 80 --seed-list 0 --planners independent_astar prioritized ECBS CA-ECBS --out results/dense/dense_s0_r80.csv
+  python -m src.experiments.runner --robots 80 --seed-list 1 --planners independent_astar prioritized ECBS CA-ECBS --out results/dense/dense_s1_r80.csv
+  python -m src.experiments.runner --robots 80 --seed-list 2 --planners independent_astar prioritized ECBS CA-ECBS --out results/dense/dense_s2_r80.csv
+  python -m src.experiments.runner --robots 60 --seed-list 0 --planners independent_astar prioritized ECBS CA-ECBS --out results/dense/dense_s0_r60.csv
+  python -m src.experiments.runner --robots 60 --seed-list 1 --planners independent_astar prioritized ECBS CA-ECBS --out results/dense/dense_s1_r60.csv
+  python -m src.experiments.runner --robots 60 --seed-list 2 --planners independent_astar prioritized ECBS CA-ECBS --out results/dense/dense_s2_r60.csv
+Then: python -m src.experiments.runner --merge results/dense/dense_s*.csv --out results/experiments_dense.csv
+Finished: 2026-11-15 16:39:07 UTC (6 jobs, 36 min)
+
+Note added 15 Nov 2026: in these runs the layout "movingai_warehouse" was the
+65 x 46 hand-built map (then saved as data/maps/warehouse-10-20-10-2-1.map),
+not the MovingAI benchmark map. Its result rows have been relabelled
+"warehouse_65x46" and the file is now data/maps/warehouse-65x46-handbuilt.map;
+the commands above are kept as they were run. The commits named above are
+not in this repository's history.

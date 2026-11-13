@@ -1,0 +1,35 @@
+Instacart rerun started: 2026-11-15 02:55:43 UTC (a first start on 2026-11-15 20:42 UTC was cut off after 18 minutes with no job finished; nothing from it is used)
+Commit: 5ed13c7dfc78912b219c85d68f57abc59733698e for everything the runs execute (src/planners, src/lifelong, src/demand, src/environment, src/tuning, runner.py); only plots.py changed afterwards
+Python: Python 3.14.6
+Machine: Linux 6.18.44-fc-v553, 2 cores, Intel(R) Xeon(R) Processor @ 2.10GHz
+Two jobs run in parallel. Planner limits are CPU seconds (time.process_time).
+Demand: data/instacart/product_frequencies.csv, sha256 685f23647755af19b85def774f74ce26e77ebdb7b11fc4886761ba0295a35f59 (LF line endings, as committed)
+Jobs:
+  python -m src.experiments.runner --seed-list 0 --robots 40 --out results/shards/main_s0_r40.csv
+  python -m src.experiments.runner --seed-list 1 --robots 40 --out results/shards/main_s1_r40.csv
+  python -m src.experiments.runner --seed-list 2 --robots 40 --out results/shards/main_s2_r40.csv
+  python -m src.experiments.runner --seed-list 0 --robots 30 --out results/shards/main_s0_r30.csv
+  python -m src.experiments.runner --seed-list 1 --robots 30 --out results/shards/main_s1_r30.csv
+  python -m src.experiments.runner --seed-list 2 --robots 30 --out results/shards/main_s2_r30.csv
+  python -m src.tuning.sweep --layout custom_narrow_aisle --agents 20 --quiet --out results/sweep_custom_20.csv
+  python -m src.tuning.sweep --layout movingai_warehouse --agents 10 --quiet --out results/sweep_movingai.csv
+  python -m src.experiments.runner --replan-every 2 --robots 20 40 --skews real --delays 0 --out results/replan_h2.csv
+  python -m src.experiments.runner --replan-every 10 --robots 20 40 --skews real --delays 0 --out results/replan_h10.csv
+  python -m src.experiments.runner --seed-list 0 --robots 20 --out results/shards/main_s0_r20.csv
+  python -m src.experiments.runner --seed-list 1 --robots 20 --out results/shards/main_s1_r20.csv
+  python -m src.experiments.runner --seed-list 2 --robots 20 --out results/shards/main_s2_r20.csv
+  python -m src.experiments.runner --seed-list 0 --robots 10 --out results/shards/main_s0_r10.csv
+  python -m src.experiments.runner --seed-list 1 --robots 10 --out results/shards/main_s1_r10.csv
+  python -m src.experiments.runner --seed-list 2 --robots 10 --out results/shards/main_s2_r10.csv
+  python -m src.tuning.sweep --layout custom_narrow_aisle --agents 10 --quiet --out results/sweep_custom.csv
+  python -m src.lifelong.stress_test --layout custom_narrow_aisle --events 20 --length 4 --duration 30 --delay 0.05 --seeds 5 --out results/stress_custom.csv
+  python -m src.lifelong.stress_test --layout movingai_warehouse --events 20 --length 4 --duration 30 --delay 0.05 --seeds 5 --out results/stress_movingai.csv
+Finished: 2026-11-15 04:48:10 UTC (all 19 jobs; 1 h 53 min)
+Then: python -m src.experiments.runner --merge results/shards/main_s*.csv --out results/experiments_full.csv
+
+Note added 15 Nov 2026: in these runs the layout "movingai_warehouse" was the
+65 x 46 hand-built map (then saved as data/maps/warehouse-10-20-10-2-1.map),
+not the MovingAI benchmark map. Its result rows have been relabelled
+"warehouse_65x46" and the file is now data/maps/warehouse-65x46-handbuilt.map;
+the commands above are kept as they were run. The commits named above are
+not in this repository's history.
